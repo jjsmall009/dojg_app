@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-y-scroll">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Japanese Grammar Learning App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module" crossorigin src="/dojg_app/assets/index-8bdc52a8.js"></script>
+    <style>
+      /* Prevent layout shift when scrollbar appears */
+      html {
+        scrollbar-gutter: stable;
+      }
+    </style>
+    <script type="module" crossorigin src="/dojg_app/assets/index-d7b415c3.js"></script>
   </head>
   <body>
     <div id="root"></div>
