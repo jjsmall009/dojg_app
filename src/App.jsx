@@ -123,63 +123,72 @@ function App() {
 
     if (isLoading || grammarPoints.length === 0) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                    <div className="text-gray-600">Loading grammar points...</div>
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-pink-50">
+                <div className="text-center p-8 bg-white/80 backdrop-blur-lg rounded-xl shadow-lg">
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-100 border-t-blue-500 mx-auto mb-4"></div>
+                    <div className="text-gray-600 font-medium">Loading grammar points...</div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen p-8 bg-gray-100"
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
         >
-            <div className="max-w-2xl mx-auto">
-                <div className="sticky top-0 bg-gray-100 py-2 mb-4 z-10 flex justify-between items-center">
-                    <div className="text-gray-600 font-medium">
-                        Grammar Point {currentIndex + 1} / {grammarPoints.length}
+            <div className="p-4 sm:p-8">
+                <div className="max-w-2xl mx-auto">
+                    <div className="sticky top-0 backdrop-blur-lg bg-white/70 p-4 rounded-xl mb-6 shadow-sm z-10 flex justify-between items-center">
+                        <div className="text-gray-600 font-medium">
+                            <span className="text-sm text-gray-400">Grammar Point</span>
+                            <div className="text-xl font-bold text-gray-800">{currentIndex + 1} / {grammarPoints.length}</div>
+                        </div>
+                        <form onSubmit={handleJumpToNumber} className="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                min="1"
+                                max={grammarPoints.length}
+                                value={jumpToNumber}
+                                onChange={(e) => setJumpToNumber(e.target.value)}
+                                placeholder="Jump to #"
+                                className="px-3 py-2 border border-gray-200 rounded-lg w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/50 backdrop-blur-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            />
+                            <button 
+                                type="submit"
+                                className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
+                            >
+                                Go
+                            </button>
+                        </form>
                     </div>
-                    <form onSubmit={handleJumpToNumber} className="flex gap-2">
-                        <input
-                            type="number"
-                            min="1"
-                            max={grammarPoints.length}
-                            value={jumpToNumber}
-                            onChange={(e) => setJumpToNumber(e.target.value)}
-                            placeholder="Jump to #"
-                            className="px-3 py-1 border rounded w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <button 
-                            type="submit"
-                            className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+
+                    <GrammarCard 
+                        grammarPoint={grammarPoints[currentIndex]} 
+                        showDetailsState={[showDetails, setShowDetails]}
+                    />
+
+                    <div className="flex justify-between mt-6 gap-4">
+                        <button
+                            onClick={previousGrammarPoint}
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-lg 
+                                    hover:from-gray-200 hover:to-gray-300 transition-all duration-300 shadow-sm 
+                                    hover:shadow-md active:shadow-sm transform hover:-translate-y-0.5 active:translate-y-0
+                                    font-medium"
                         >
-                            Go
+                            ← Previous
                         </button>
-                    </form>
-                </div>
-
-                <GrammarCard 
-                    grammarPoint={grammarPoints[currentIndex]} 
-                    showDetailsState={[showDetails, setShowDetails]}
-                />
-
-                <div className="flex justify-between mt-4">
-                    <button
-                        onClick={previousGrammarPoint}
-                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors"
-                    >
-                        Previous
-                    </button>
-                    <button
-                        onClick={nextGrammarPoint}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                    >
-                        Next
-                    </button>
+                        <button
+                            onClick={nextGrammarPoint}
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg 
+                                    hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-sm 
+                                    hover:shadow-md active:shadow-sm transform hover:-translate-y-0.5 active:translate-y-0
+                                    font-medium"
+                        >
+                            Next →
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
