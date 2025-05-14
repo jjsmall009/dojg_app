@@ -92,7 +92,7 @@ export function GrammarCard({ grammarPoint, showDetailsState }) {
             </button>
 
             {showDetails && (
-                <div className="mt-4 space-y-2">
+                <div className="mt-4 space-y-2 details-section">
                     <p><strong>Romaji:</strong> {grammarPoint.romaji}</p>
                     <p><strong>Meaning:</strong> {grammarPoint.meaning}</p>
                     <p><strong>Level:</strong> {grammarPoint.level}</p>

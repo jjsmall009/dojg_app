@@ -12,8 +12,12 @@ function App() {
     const [jumpToNumber, setJumpToNumber] = useState('');
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
+    const [touchStartY, setTouchStartY] = useState(null);
+    const [touchEndY, setTouchEndY] = useState(null);
 
+    // Minimum distances for swipe/scroll detection
     const minSwipeDistance = 50;
+    const minScrollDistance = 10;
 
     useEffect(() => {
         setIsLoading(true);
@@ -69,17 +73,33 @@ function App() {
     }, [nextGrammarPoint, previousGrammarPoint]);
 
     const onTouchStart = (e) => {
+        // Check if the touch started in a scrollable area
+        const target = e.target;
+        const isInDetailsView = target.closest('.details-section');
+        
         setTouchEnd(null);
+        setTouchEndY(null);
         setTouchStart(e.targetTouches[0].clientX);
+        setTouchStartY(e.targetTouches[0].clientY);
     };
 
     const onTouchMove = (e) => {
         setTouchEnd(e.targetTouches[0].clientX);
+        setTouchEndY(e.targetTouches[0].clientY);
     };
 
     const onTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
+        if (!touchStart || !touchEnd || !touchStartY || !touchEndY) return;
 
+        const horizontalDistance = Math.abs(touchStart - touchEnd);
+        const verticalDistance = Math.abs(touchStartY - touchEndY);
+        
+        // If vertical scrolling is the primary motion, don't trigger swipe
+        if (verticalDistance > minScrollDistance && verticalDistance > horizontalDistance) {
+            return;
+        }
+
+        // Only trigger swipe if the horizontal motion is significant
         const distance = touchStart - touchEnd;
         const isLeftSwipe = distance > minSwipeDistance;
         const isRightSwipe = distance < -minSwipeDistance;
